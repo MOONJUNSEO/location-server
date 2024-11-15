@@ -1,0 +1,8 @@
+app:
+  name: location-server
+  services:
+    - name: web
+      run: python app.py
+  build:
+    commands:
+      - pip install -r requirements.txt
