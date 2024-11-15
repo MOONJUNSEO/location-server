@@ -13,6 +13,7 @@ CORS(app, resources={
         "supports_credentials": True
     }
 })
+
 # 위치 정보를 저장할 리스트
 locations = []
 
