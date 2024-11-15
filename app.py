@@ -4,13 +4,9 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app, resources={
     r"/*": {
-        "origins": [
-            "https://web-test-m3howeoye65c6a57.sel4.cloudtype.app",
-            "http://localhost:3000",
-            "http://127.0.0.1:3000"
-        ],
+        "origins": "*",  # 모든 도메인 허용
         "methods": ["GET", "POST", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization"],
+        "allow_headers": ["Content-Type"],
         "supports_credentials": True
     }
 })
