@@ -4,13 +4,15 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app, resources={
     r"/*": {
-        "origins": "*",  # 모든 도메인 허용
+        "origins": [
+            "https://web-test-m3howeoye65c6a57.sel4.cloudtype.app",
+            "http://localhost:3000"
+        ],
         "methods": ["GET", "POST", "OPTIONS"],
-        "allow_headers": ["Content-Type"],
+        "allow_headers": ["Content-Type", "Authorization"],
         "supports_credentials": True
     }
 })
-
 # 위치 정보를 저장할 리스트
 locations = []
 
