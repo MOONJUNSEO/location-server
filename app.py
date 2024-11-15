@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, render_template_string
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "https://playful-pika-0796f3.netlify.app"}})
+CORS(app, resources={r"/*": {"origins": "https://web-test-m3howeoye65c6a57.sel4.cloudtype.app/"}})
 
 # 위치 정보를 저장할 리스트
 locations = []
