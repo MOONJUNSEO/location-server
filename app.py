@@ -2,7 +2,18 @@ from flask import Flask, request, jsonify, render_template_string
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "https://web-test-m3howeoye65c6a57.sel4.cloudtype.app"}})
+CORS(app, resources={
+    r"/*": {
+        "origins": [
+            "https://web-test-m3howeoye65c6a57.sel4.cloudtype.app",
+            "http://localhost:3000",
+            "http://127.0.0.1:3000"
+        ],
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization"],
+        "supports_credentials": True
+    }
+})
 
 # 위치 정보를 저장할 리스트
 locations = []
@@ -31,7 +42,6 @@ def health_check():
 @app.route('/')
 @app.route('/map', methods=['GET'])
 def show_map():
-    # HTML 코드 템플릿
     map_html = '''
 <!DOCTYPE html>
 <html lang="ko">
@@ -39,7 +49,6 @@ def show_map():
     <meta charset="UTF-8">
     <title>위치 정보 지도</title>
     <style>
-        /* 지도와 위치 정보 스타일 설정 */
         #map {
             height: 600px;
             width: 100%;
@@ -65,13 +74,11 @@ def show_map():
 
     <script>
         function initMap() {
-            // 초기 지도 설정 (중심 위치와 줌)
             const map = new google.maps.Map(document.getElementById('map'), {
-                center: { lat: 36.5, lng: 127.5 }, // 기본 위치 (한국 중앙)
+                center: { lat: 36.5, lng: 127.5 },
                 zoom: 7
             });
 
-            // 서버에서 받은 위치 정보를 가져와 지도에 마커 추가
             const locations = {{ locations | tojson }};
             locations.forEach((location) => {
                 new google.maps.Marker({
@@ -81,7 +88,6 @@ def show_map():
             });
         }
 
-        // 페이지 로드 시 지도 초기화
         window.onload = initMap;
     </script>
 </body>
