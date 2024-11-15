@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify, render_template_string
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 # 위치 정보를 저장할 리스트
 locations = []
