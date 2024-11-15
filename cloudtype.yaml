@@ -6,3 +6,4 @@ app:
   build:
     commands:
       - pip install -r requirements.txt
+      - pip install flask-cors
