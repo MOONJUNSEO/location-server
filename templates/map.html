@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>위치 정보 지도</title>
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .controls {
+            margin-bottom: 20px;
+        }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDxg42U8tFRwVWAk64COW-x5qfApBV6jLs"></script>
+</head>
+<body>
+    <h1>실시간 위치 정보 지도</h1>
+    <div class="controls">
+        <button onclick="refreshLocations()">위치 정보 새로고침</button>
+        <span id="lastUpdate"></span>
+    </div>
+    <div id="map"></div>
+    <script>
+        let map;
+        let markers = [];
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 36.5, lng: 127.5 },
+                zoom: 7
+            });
+            loadLocations();
+        }
+
+        function loadLocations() {
+            fetch('/locations')
+                .then(response => response.json())
+                .then(locations => {
+                    // 기존 마커 제거
+                    markers.forEach(marker => marker.setMap(null));
+                    markers = [];
+
+                    // 새로운 마커 추가
+                    locations.forEach((location) => {
+                        const marker = new google.maps.Marker({
+                            position: { 
+                                lat: parseFloat(location.latitude), 
+                                lng: parseFloat(location.longitude) 
+                            },
+                            map: map,
+                            title: `Device: ${location.device_id}\nTime: ${location.timestamp}`
+                        });
+                        markers.push(marker);
+                    });
+
+                    // 마지막 업데이트 시간 표시
+                    document.getElementById('lastUpdate').textContent = 
+                        `마지막 업데이트: ${new Date().toLocaleString()}`;
+                })
+                .catch(error => console.error('Error loading locations:', error));
+        }
+
+        function refreshLocations() {
+            loadLocations();
+        }
+
+        window.onload = initMap;
+        
+        // 30초마다 자동 새로고침
+        setInterval(loadLocations, 30000);
+    </script>
+</body>
+</html>
